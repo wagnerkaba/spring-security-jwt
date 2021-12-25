@@ -12,6 +12,8 @@ import java.util.ArrayList;
 public class MyUserDetailsService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String userName) throws UsernameNotFoundException {
+
+        //TODO Esta implementação utiliza apenas um usuário fixo. Mudar método para utilizar usuários de um banco de dados
         return new User("foo", "foo", new ArrayList<>());
     }
 }
