@@ -1,4 +1,4 @@
-package com.wagner.springsecurityjwt;
+package com.wagner.springsecurityjwt.configuration;
 
 import com.wagner.springsecurityjwt.services.MyUserDetailsService;
 import com.wagner.springsecurityjwt.filters.JwtRequestFilter;

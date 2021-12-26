@@ -1,4 +1,4 @@
-package com.wagner.springsecurityjwt;
+package com.wagner.springsecurityjwt.controller;
 
 import com.wagner.springsecurityjwt.models.AuthenticationRequest;
 import com.wagner.springsecurityjwt.models.AuthenticationResponse;
@@ -10,15 +10,13 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.stereotype.Controller;
-import org.springframework.stereotype.Repository;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-public class HelloResource {
+public class SecurityController {
 
     @Autowired
     private AuthenticationManager authenticationManager;
