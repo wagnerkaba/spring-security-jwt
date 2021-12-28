@@ -27,6 +27,7 @@ public class SecurityConfigurer extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
 
+        // através do MyUserDetailsService os dados do usuário são carregados
         auth.userDetailsService(myUserDetailsService);
 
     }
@@ -39,8 +40,9 @@ public class SecurityConfigurer extends WebSecurityConfigurerAdapter {
                 .antMatchers("/authenticate").permitAll()
                 .anyRequest().authenticated()
                 .and()
-                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-                .and().formLogin();
+                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS); //não é para salvar sessions, pois estamos usando JWT
+
+        // utiliza o filtro jwtRequestFilter antes de UsernamePasswordAuthenticationFilter ser chamado
         http.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
     }
 

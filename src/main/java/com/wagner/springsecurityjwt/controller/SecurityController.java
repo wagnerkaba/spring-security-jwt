@@ -18,6 +18,8 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class SecurityController {
 
+    //Na classe SecurityConfigurer existe um @Bean de AuthenticationManager
+    //Para mais informações, vide: https://www.youtube.com/watch?v=X80nJ5T7YpE aos 26 minutos
     @Autowired
     private AuthenticationManager authenticationManager;
 
@@ -34,17 +36,27 @@ public class SecurityController {
 
     @RequestMapping(value = "/authenticate", method = RequestMethod.POST)
     public ResponseEntity<?> createAuthenticationToken(@RequestBody AuthenticationRequest authenticationRequest) throws Exception{
+
+        // tenta autenticar o usuário enviado através do @RequestBody
+        // se a autenticação falhar, lança uma BadCredentialsException
         try {
+
+
             authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(authenticationRequest.getUsername(), authenticationRequest.getPassword())
             );
         } catch (BadCredentialsException e){
             throw new Exception("Incorrect username or password", e);
         }
+
+        // o usuário foi autenticado, então agora é preciso criar o token JWT
+        // Para criar o token JWT, é preciso uma instância de userDetails
         final UserDetails userDetails = userDetailsService.loadUserByUsername(authenticationRequest.getUsername());
 
+        // cria um token JWT com o objeto userDetails
         final String jwt = jwtTokenUtil.generateToken(userDetails);
 
+        // retorna otoken JWT para o usuário
         return ResponseEntity.ok(new AuthenticationResponse(jwt));
 
     }

@@ -13,7 +13,9 @@ public class MyUserDetailsService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String userName) throws UsernameNotFoundException {
 
-        //TODO Esta implementação utiliza apenas um usuário fixo. Mudar método para utilizar usuários de um banco de dados
+        // Esta implementação utiliza apenas um usuário fixo
+        // Pode-se mudar este método para utilizar usuários de um banco de dados
+        // veja exemplo em que usuário é carregado através de um banco de dados: https://github.com/wagnerkaba/spring-security-jpa
         return new User("foo", "foo", new ArrayList<>());
     }
 }

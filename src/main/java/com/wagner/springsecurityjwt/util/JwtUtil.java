@@ -40,9 +40,16 @@ public class JwtUtil {
         return createToken(claims, userDetails.getUsername());
     }
 
+    // cria um JWT token com SUB (subject que é o username), IAT (IssuedAt) e EXP (Expiration date)
+    // a assinatura do JWT token é criada utilizando-se a SECRET_KEY
+    // Para fins de estudo, o JWT token criado pode ser decodificado manualmente em https://jwt.io/
+    // Nesse site, vc poderá verificar que o JWT token tem essas três informações (sub, iat, exp)
     private String createToken(Map<String, Object> claims, String subject) {
 
-        return Jwts.builder().setClaims(claims).setSubject(subject).setIssuedAt(new Date(System.currentTimeMillis()))
+        return Jwts.builder()
+                .setClaims(claims)
+                .setSubject(subject)
+                .setIssuedAt(new Date(System.currentTimeMillis()))
                 .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 10))
                 .signWith(SignatureAlgorithm.HS256, SECRET_KEY).compact();
     }

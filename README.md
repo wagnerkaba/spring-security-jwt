@@ -11,3 +11,4 @@ It wires in some code to check incoming requests for JWT in the Authorization he
 - Spring Web
 - Spring Security
 - Lombok
+- JWT

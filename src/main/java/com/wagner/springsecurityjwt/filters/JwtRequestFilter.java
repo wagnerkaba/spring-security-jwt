@@ -15,6 +15,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
+
+
+
 @Component
 public class JwtRequestFilter extends OncePerRequestFilter {
 
@@ -24,20 +27,31 @@ public class JwtRequestFilter extends OncePerRequestFilter {
     @Autowired
     private JwtUtil jwtUtil;
 
+    // Este filtro intercepta todos os requests e examina o header para verificar se existe um JWT válido
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws ServletException, IOException {
+
+        // captura o header do request
         final String authorizationHeader = request.getHeader("Authorization");
 
         String username = null;
         String jwt = null;
 
+        // verifica se o header não é nulo e se contém a palavra "Bearer "
+        // O JWT vem sempre depois da palavra "Bearer "
         if (authorizationHeader != null && authorizationHeader.startsWith("Bearer ")){
             jwt = authorizationHeader.substring(7);
             username = jwtUtil.extractUsername(jwt);
         }
 
+        // verifica se o usuário não é null e se ele já foi autorizado pelo SecurityContextHolder
+        // se ainda não foi autorizado no SecurityContextHolder, entra dentro do IF para continuar autorização
         if (username != null && SecurityContextHolder.getContext().getAuthentication() == null){
+
+           // carrega o userDetails
             UserDetails userDetails = this.userDetailsService.loadUserByUsername(username);
+
+            // verifica se o JWT é válido para o respectivo usuário (userDetails) e se não expirou
             if(jwtUtil.validateToken(jwt, userDetails)){
 
                 UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(
@@ -48,6 +62,7 @@ public class JwtRequestFilter extends OncePerRequestFilter {
 
             }
         }
+        // passa o controle para o próximo filtro no FilterChain
         chain.doFilter(request, response);
 
     }
