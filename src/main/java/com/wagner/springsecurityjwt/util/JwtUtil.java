@@ -32,7 +32,7 @@ public class JwtUtil {
     }
 
     private Boolean isTokenExpired(String token) {
-        System.out.println("Data de expiração do token: " + extractExpiration(token));
+        System.out.println("Data de expiração do token JWT: " + extractExpiration(token));
         Date date = new Date();
         System.out.println("Data atual: " + date);
         return extractExpiration(token).before(date);
